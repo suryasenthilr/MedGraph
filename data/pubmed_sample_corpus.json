@@ -1,0 +1,42 @@
+[
+  {
+    "pmid": "PMC7498123",
+    "title": "Renal Hemodynamic Effects of NSAIDs in Patients with Pre-existing Renal Disease",
+    "journal": "New England Journal of Medicine / Clinical Nephrology",
+    "year": 2022,
+    "abstract": "Nonsteroidal anti-inflammatory drugs (NSAIDs) such as ibuprofen and naproxen inhibit cyclooxygenase-1 and 2, which reduces the synthesis of renal prostaglandins (PGE2 and PGI2). In healthy kidneys with normal basal tone, prostaglandin inhibition has minimal impact. However, in patients with chronic kidney disease (CKD), volume depletion, or heart failure, renal blood flow becomes critically dependent on prostaglandin-mediated vasodilation of the afferent arteriole. NSAID administration in these patients precipitates sudden afferent vasoconstriction, causing an abrupt drop in glomerular filtration rate (GFR), acute interstitial nephritis, and acceleration of chronic kidney damage.",
+    "keywords": ["Ibuprofen", "NSAID", "Chronic Kidney Disease", "CKD", "Renal Hemodynamics", "eGFR", "Acute Kidney Injury"]
+  },
+  {
+    "pmid": "PMC8112049",
+    "title": "Gastrointestinal and Intracranial Bleeding Risks Associated with Concurrent Warfarin and NSAID Therapy",
+    "journal": "The Lancet Haematology",
+    "year": 2023,
+    "abstract": "A nationwide cohort study evaluated 45,000 patients on oral anticoagulation with warfarin. Concurrent prescription or OTC use of ibuprofen was associated with a hazard ratio of 3.84 (95% CI: 3.12-4.72) for major upper gastrointestinal bleeding compared to warfarin monotherapy. The mechanism involves dual insults: direct chemical erosion of the gastric mucosa by non-selective COX inhibitors combined with systemic hypocoagulability from vitamin K epoxide reductase inhibition by warfarin. In patients requiring analgesic therapy on warfarin, paracetamol (acetaminophen) up to 2g daily is the safest alternative.",
+    "keywords": ["Warfarin", "Ibuprofen", "Bleeding", "Anticoagulation", "Gastrointestinal Hemorrhage", "Drug Interaction"]
+  },
+  {
+    "pmid": "PMC6890334",
+    "title": "Clinical Presentation and Diagnostic Management of Dengue Virus Infection",
+    "journal": "WHO Bulletin of Tropical Medicine",
+    "year": 2021,
+    "abstract": "Dengue fever typically presents abruptly with high biphasic fever, severe retro-orbital headache, generalized myalgias and arthralgias ('breakbone fever'), and a maculopapular blanching rash. The critical phase begins around days 3-7 coinciding with defervescence, marked by transient capillary hyperpermeability and severe thrombocytopenia. Because of the inherent risk of severe plasma leakage and internal bleeding, antiplatelet agents and NSAIDs are strictly contraindicated in all stages of suspected dengue infection.",
+    "keywords": ["Dengue Fever", "High Fever", "Retro-orbital Pain", "Myalgia", "Petechial Rash", "Thrombocytopenia"]
+  },
+  {
+    "pmid": "PMC9245110",
+    "title": "Lactic Acidosis and Safety Thresholds for Metformin in Diabetic Nephropathy",
+    "journal": "Diabetes Care",
+    "year": 2023,
+    "abstract": "Metformin is eliminated almost entirely by glomerular filtration and active tubular secretion. In patients with severe diabetic kidney disease where eGFR falls below 30 mL/min/1.73m2, metformin plasma concentrations accumulate exponentially, inhibiting mitochondrial complex I in hepatocytes and leading to life-threatening lactic acidosis (MALA) with mortality rates approaching 30-50%. Clinical consensus mandates withholding metformin during acute dehydrating illness and discontinuing when eGFR is persistently <30 mL/min.",
+    "keywords": ["Metformin", "Diabetes Mellitus Type 2", "Chronic Kidney Disease", "eGFR", "Lactic Acidosis"]
+  },
+  {
+    "pmid": "PMC8912445",
+    "title": "SGLT2 Inhibitor Cardiorenal Protection in Type 2 Diabetes and CKD",
+    "journal": "Journal of the American Society of Nephrology",
+    "year": 2023,
+    "abstract": "Sodium-glucose cotransporter 2 (SGLT2) inhibitors, including empagliflozin and dapagliflozin, restore tubuloglomerular feedback by promoting sodium delivery to the macula densa, thereby reducing intraglomerular hypertension and attenuating progressive nephron loss. Large randomized controlled trials (EMPA-KIDNEY, DAPA-CKD) demonstrated significant reductions in composite renal endpoints and all-cause cardiovascular death in patients with and without type 2 diabetes.",
+    "keywords": ["Empagliflozin", "SGLT2 Inhibitor", "Diabetes Mellitus Type 2", "Chronic Kidney Disease", "Cardiorenal Protection"]
+  }
+]

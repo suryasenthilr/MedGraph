@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background-color: #EAF1F5;
+  color: #163247;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Clinical Markdown Tables & Elements */
+.clinical-markdown table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 0.875rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #D5E2EC;
+  background-color: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.clinical-markdown th {
+  background-color: #F1F7FB;
+  color: #11423F;
+  font-weight: 700;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #D5E2EC;
+  border-right: 1px solid #E3ECF3;
+}
+
+.clinical-markdown th:last-child {
+  border-right: none;
+}
+
+.clinical-markdown td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #E8F0F5;
+  border-right: 1px solid #E8F0F5;
+  color: #163247;
+}
+
+.clinical-markdown td:last-child {
+  border-right: none;
+}
+
+.clinical-markdown tr:last-child td {
+  border-bottom: none;
+}
+
+.clinical-markdown tr:hover td {
+  background-color: #F8FCFE;
+}
+
+.clinical-markdown h1,
+.clinical-markdown h2,
+.clinical-markdown h3,
+.clinical-markdown h4 {
+  color: #11423F;
+  font-weight: 700;
+  margin-top: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+.clinical-markdown h3 {
+  font-size: 0.95rem;
+  border-bottom: 1px solid #E2ECF3;
+  padding-bottom: 0.375rem;
+}
+
+.clinical-markdown p {
+  margin-bottom: 0.75rem;
+}
+
+.clinical-markdown ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.clinical-markdown ol {
+  list-style-type: decimal;
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.clinical-markdown li {
+  margin-bottom: 0.35rem;
+}
+
+.clinical-markdown strong {
+  color: #11423F;
+  font-weight: 600;
+}
+
+.clinical-markdown hr {
+  border: 0;
+  border-top: 1px solid #D5E2EC;
+  margin: 1.25rem 0;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EAF1F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B6CBD8;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9BB6C6;
+}

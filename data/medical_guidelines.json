@@ -1,0 +1,92 @@
+[
+  {
+    "guideline_id": "GL-KDIGO-CKD-2024",
+    "organization": "KDIGO (Kidney Disease: Improving Global Outcomes)",
+    "title": "Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease",
+    "topic": "Chronic Kidney Disease & Medication Safety",
+    "year": 2024,
+    "recommendations": [
+      {
+        "code": "KDIGO-REC-1",
+        "text": "Avoid routine use of Non-Steroidal Anti-Inflammatory Drugs (NSAIDs) such as Ibuprofen, Naproxen, and Diclofenac in individuals with CKD (eGFR < 60 mL/min/1.73m2), as they inhibit renal prostaglandins, reduce renal perfusion, and accelerate acute kidney injury (AKI) or CKD progression.",
+        "evidence_grade": "Class I, Level A",
+        "keywords": ["Ibuprofen", "NSAID", "Chronic Kidney Disease", "CKD", "Renal Impairment", "eGFR"]
+      },
+      {
+        "code": "KDIGO-REC-2",
+        "text": "In patients with Type 2 Diabetes and CKD with eGFR >= 20 mL/min/1.73m2, treat with an SGLT2 inhibitor (e.g., Empagliflozin, Dapagliflozin) to reduce CKD progression and cardiovascular mortality.",
+        "evidence_grade": "Class I, Level A",
+        "keywords": ["Diabetes", "CKD", "Empagliflozin", "SGLT2 inhibitor", "eGFR"]
+      },
+      {
+        "code": "KDIGO-REC-3",
+        "text": "For pain management in CKD patients, Paracetamol (Acetaminophen) is preferred over NSAIDs as it does not adversely affect renal hemodynamics or inhibit platelet cyclooxygenase.",
+        "evidence_grade": "Class IIa, Level B",
+        "keywords": ["Pain", "Paracetamol", "Acetaminophen", "CKD", "Analgesic"]
+      }
+    ]
+  },
+  {
+    "guideline_id": "GL-CHEST-ANTICOAG-2023",
+    "organization": "ACCP (American College of Chest Physicians / CHEST)",
+    "title": "Antithrombotic Therapy for VTE and Atrial Fibrillation Disease Guidelines",
+    "topic": "Anticoagulation and Drug-Drug Interactions",
+    "year": 2023,
+    "recommendations": [
+      {
+        "code": "CHEST-REC-1",
+        "text": "Patients receiving oral anticoagulation with Warfarin must strictly avoid concurrent NSAIDs (including over-the-counter Ibuprofen and Naproxen) due to synergistic inhibition of hemostasis and up to 4-fold elevated risk of fatal gastrointestinal bleeding.",
+        "evidence_grade": "Class I, Level A",
+        "keywords": ["Warfarin", "Ibuprofen", "NSAID", "Bleeding", "Anticoagulant", "Interaction"]
+      },
+      {
+        "code": "CHEST-REC-2",
+        "text": "For anticoagulated patients requiring mild to moderate analgesia or antipyresis, Paracetamol at doses <= 2g/day is the recommended first-line agent, with INR monitoring if used regularly.",
+        "evidence_grade": "Class IIa, Level B",
+        "keywords": ["Warfarin", "Paracetamol", "Analgesia", "INR"]
+      }
+    ]
+  },
+  {
+    "guideline_id": "GL-ADA-DIABETES-2024",
+    "organization": "ADA (American Diabetes Association)",
+    "title": "Standards of Care in Diabetes — 2024",
+    "topic": "Pharmacologic Approaches to Glycemic Treatment",
+    "year": 2024,
+    "recommendations": [
+      {
+        "code": "ADA-REC-1",
+        "text": "Metformin remains the cornerstone initial therapy for Type 2 Diabetes when eGFR is >= 45 mL/min/1.73m2. If eGFR falls between 30-44 mL/min/1.73m2, reduce maximum daily dose to 1000mg. Discontinue Metformin if eGFR drops below 30 mL/min/1.73m2 to prevent lactic acidosis.",
+        "evidence_grade": "Class I, Level A",
+        "keywords": ["Metformin", "Diabetes", "eGFR", "Lactic Acidosis", "CKD"]
+      },
+      {
+        "code": "ADA-REC-2",
+        "text": "ACE inhibitors or ARBs are recommended for diabetic patients with hypertension and urinary albumin-to-creatinine ratio (uACR) >= 30 mg/g to prevent renal disease progression.",
+        "evidence_grade": "Class I, Level A",
+        "keywords": ["Lisinopril", "ACE Inhibitor", "Diabetes", "Albuminuria", "Hypertension"]
+      }
+    ]
+  },
+  {
+    "guideline_id": "GL-WHO-DENGUE-2023",
+    "organization": "WHO (World Health Organization)",
+    "title": "Dengue Guidelines for Diagnosis, Treatment, Prevention and Control",
+    "topic": "Dengue Clinical Management and Safety Warnings",
+    "year": 2023,
+    "recommendations": [
+      {
+        "code": "WHO-DENGUE-1",
+        "text": "In patients with suspected or confirmed Dengue Fever, NEVER administer Aspirin, Ibuprofen, or other NSAIDs because they exacerbate thrombocytopenia, increase plasma leakage, and induce severe hemorrhagic complications. Paracetamol is the sole safe antipyretic.",
+        "evidence_grade": "Class I, Level A",
+        "keywords": ["Dengue", "Ibuprofen", "Aspirin", "NSAID", "Paracetamol", "Bleeding"]
+      },
+      {
+        "code": "WHO-DENGUE-2",
+        "text": "Monitor hematocrit and platelet counts daily during the critical phase of Dengue to assess plasma leakage and bleeding risk.",
+        "evidence_grade": "Class I, Level B",
+        "keywords": ["Dengue", "Platelets", "Hematocrit", "CBC"]
+      }
+    ]
+  }
+]
