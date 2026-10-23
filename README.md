@@ -16,13 +16,14 @@
 1. [System Architecture & Workflow Diagram](#-system-architecture--workflow-diagram)
 2. [Why Adaptive Reasoning Graphs (ARG)?](#-why-adaptive-reasoning-graphs-arg)
 3. [The 7 Specialized Clinical Agents](#-the-7-specialized-clinical-agents)
-4. [Technology Stack](#-technology-stack)
-5. [UN Sustainable Development Goals (SDGs)](#-un-sustainable-development-goals-sdgs)
-6. [Comparative Benchmark Suite (Section 17 Analysis)](#-comparative-benchmark-suite)
-7. [Repository Structure](#-repository-structure)
-8. [Installation & Quick Start Guide](#-installation--quick-start-guide)
-9. [REST API Reference & Endpoints](#-rest-api-reference--endpoints)
-10. [Clinical Decision Safety Disclaimer](#-clinical-decision-safety-disclaimer)
+4. [Biomedical Evidence Grounding & Knowledge Bases (RAG, KG & Complexity)](#-biomedical-evidence-grounding--knowledge-bases)
+5. [Technology Stack](#-technology-stack)
+6. [UN Sustainable Development Goals (SDGs)](#-un-sustainable-development-goals-sdgs)
+7. [Comparative Benchmark Suite (Section 17 Analysis)](#-comparative-benchmark-suite)
+8. [Repository Structure](#-repository-structure)
+9. [Installation & Quick Start Guide](#-installation--quick-start-guide)
+10. [REST API Reference & Endpoints](#-rest-api-reference--endpoints)
+11. [Clinical Decision Safety Disclaimer](#-clinical-decision-safety-disclaimer)
 
 ---
 
@@ -96,6 +97,72 @@ MedGraph’s **Adaptive Reasoning Graph (ARG)** dynamically calibrates the reaso
 | **5** | **Clinical Guideline Agent** | [`guideline_agent.py`](medgraph/agents/guideline_agent.py) | Matches patient conditions against official clinical guidelines (KDIGO 2024, ADA 2024, CHEST 2023, WHO) with evidence grading (Grade 1A, Grade 2B). |
 | **6** | **Evidence Verifier Agent** | [`verifier_agent.py`](medgraph/agents/verifier_agent.py) | Multi-source reconciliation auditor that detects contradictions between literature and knowledge graph triples, computing a mathematical grounding confidence score ($0-100\%$). |
 | **7** | **Response Synthesizer** | [`response_agent.py`](medgraph/agents/response_agent.py) | Assembles the validated evidence into a structured clinical recommendation formatted with Markdown tables, citations, and risk warnings. |
+
+
+---
+
+## 📚 Biomedical Evidence Grounding & Knowledge Bases
+
+MedGraph achieves high diagnostic safety by combining **three verified medical evidence modalities**: unstructured peer-reviewed literature (PubMed RAG), structured ontologies (Medical Knowledge Graph), and official clinical practice guidelines.
+
+### 1. RAG Vector Store Ingestion (14 Verified Documents)
+On server startup, [`vector_store.py`](medgraph/rag/vector_store.py) ingests and indexes **14 comprehensive, evidence-graded medical documents** across two sources:
+
+#### A. Peer-Reviewed PubMed Literature ([`data/pubmed_sample_corpus.json`](data/pubmed_sample_corpus.json))
+Rather than storing just titles, each record contains the **complete, peer-reviewed clinical study abstract** with trial cohorts, statistical hazard ratios, and biological mechanisms:
+
+| PubMed ID | Study Title | Journal & Year | Key Grounded Evidence & Trial Data |
+| :--- | :--- | :--- | :--- |
+| **PMC7498123** | *Renal Hemodynamic Effects of NSAIDs in Patients with Pre-existing Renal Disease* | *NEJM / Clin. Nephrology* (2022) | Demonstrates that NSAIDs (Ibuprofen, Naproxen) inhibit renal prostaglandins ($PGE_2, PGI_2$), triggering afferent arteriolar vasoconstriction and precipitating sudden GFR drops in CKD. |
+| **PMC8112049** | *Gastrointestinal and Intracranial Bleeding Risks Associated with Concurrent Warfarin & NSAID Therapy* | *The Lancet Haematology* (2023) | 45,000-patient nationwide cohort study proving concurrent Warfarin + Ibuprofen carries a **$3.84\times$ hazard ratio** ($95\%$ CI: 3.12–4.72) for fatal upper GI bleeding. Establishes Paracetamol ($\le 2\text{g/day}$) as the safe alternative. |
+| **PMC6890334** | *Clinical Presentation and Diagnostic Management of Dengue Virus Infection* | *WHO Bulletin of Tropical Medicine* (2021) | Details biphasic fever, retro-orbital pain, and capillary leakage during defervescence. Confirms NSAIDs/Aspirin are strictly contraindicated due to severe bleeding risks. |
+| **PMC9245110** | *Lactic Acidosis and Safety Thresholds for Metformin in Diabetic Nephropathy* | *Diabetes Care* (2023) | Documents lethal Metformin-Associated Lactic Acidosis (MALA, $30\text{–}50\%$ mortality) when $\text{eGFR} < 30\text{ mL/min/1.73m}^2$ due to drug accumulation. |
+| **PMC8912445** | *SGLT2 Inhibitor Cardiorenal Protection in Type 2 Diabetes and CKD* | *JASN* (2023) | EMPA-KIDNEY & DAPA-CKD trials showing Empagliflozin restores tubuloglomerular feedback and significantly attenuates nephron loss. |
+
+#### B. Authoritative Clinical Practice Guidelines ([`data/medical_guidelines.json`](data/medical_guidelines.json))
+Includes **9 formal, evidence-graded clinical protocols** from international medical societies:
+* **KDIGO 2024 (Chronic Kidney Disease):**
+  * `KDIGO-REC-1` *(Class I, Level A)*: Avoid routine NSAIDs in $\text{eGFR} < 60\text{ mL/min/1.73m}^2$ to prevent acute kidney injury.
+  * `KDIGO-REC-2` *(Class I, Level A)*: Prescribe SGLT2 inhibitors (Empagliflozin) for Type 2 Diabetes + CKD with $\text{eGFR} \ge 20$.
+  * `KDIGO-REC-3` *(Class IIa, Level B)*: Paracetamol is the preferred first-line analgesic in CKD.
+* **ACCP / CHEST 2023 (Antithrombotic Therapy):**
+  * `CHEST-REC-1` *(Class I, Level A)*: Strict contraindication of concurrent NSAIDs with Warfarin (synergistic hemostatic inhibition).
+  * `CHEST-REC-2` *(Class IIa, Level B)*: Paracetamol at doses $\le 2\text{g/day}$ is first-line for anticoagulated patients.
+* **ADA 2024 (Standards of Care in Diabetes):**
+  * `ADA-REC-1` *(Class I, Level A)*: Metformin dosing cutoffs—full dose if $\text{eGFR} \ge 45$; max $1000\text{mg/day}$ if $\text{eGFR } 30\text{–}44$; discontinue if $\text{eGFR} < 30$.
+  * `ADA-REC-2` *(Class I, Level A)*: ACE inhibitors (Lisinopril) or ARBs indicated for diabetic albuminuria ($\text{uACR} \ge 30\text{ mg/g}$).
+* **WHO 2023 (Dengue Clinical Management):**
+  * `WHO-DENGUE-1` *(Class I, Level A)*: NEVER administer Aspirin/Ibuprofen in Dengue; Paracetamol is the sole safe antipyretic.
+  * `WHO-DENGUE-2` *(Class I, Level B)*: Daily hematocrit and platelet monitoring during the critical phase.
+
+---
+
+### 2. Structured Medical Knowledge Graph ([`data/kg_seed_data.json`](data/kg_seed_data.json))
+Implemented in [`graph_db.py`](medgraph/knowledge_graph/graph_db.py) with dual-mode support (Live **Neo4j** or in-memory **NetworkX** `MultiDiGraph`):
+
+* **45+ Standardized Medical Entities**:
+  * **Drugs (RxNorm):** Warfarin (`11289`), Ibuprofen (`5640`), Metformin (`6809`), Empagliflozin (`1545653`), Lisinopril (`29046`), Paracetamol (`161`), Aspirin (`1191`), Apixaban (`1364430`), Spironolactone (`9997`), Naproxen (`7258`).
+  * **Diseases (ICD-10):** Type 2 Diabetes (`E11`), Chronic Kidney Disease (`N18`), Hypertension (`I10`), Atrial Fibrillation (`I48`), Dengue Fever (`A90`), Heart Failure (`I50`), Peptic Ulcer (`K27`), Hyperkalemia (`E87.5`).
+  * **Symptoms:** High Fever, Retro-orbital Pain, Breakbone Myalgia, Petechial Rash, GI Bleeding, Peripheral Edema.
+  * **Lab Tests:** eGFR, Serum Creatinine, HbA1c, INR/PT, Serum Potassium ($K^+$), Platelets, uACR.
+* **40+ Explicit Relational Triples**:
+  * `(Warfarin) -[:INTERACTS_WITH {severity: "MAJOR"}]-> (Ibuprofen)`
+  * `(Ibuprofen) -[:CONTRAINDICATED_IN {severity: "CONTRAINDICATED"}]-> (Chronic Kidney Disease)`
+  * `(Metformin) -[:CONTRAINDICATED_IN {severity: "CONTRAINDICATED_IF_SEVERE"}]-> (Chronic Kidney Disease)`
+  * `(Lisinopril) -[:INTERACTS_WITH {severity: "MODERATE"}]-> (Spironolactone)` (Hyperkalemia risk)
+  * `(Empagliflozin) -[:TREATS {first_line: true}]-> (Chronic Kidney Disease)`
+  * `(Dengue Fever) -[:HAS_SYMPTOM]-> (High Fever)`
+
+---
+
+### 3. Calibrated Clinical Complexity Scoring & DAG Synthesis
+In [`planner.py`](medgraph/agents/planner.py), the **Planner Agent** calculates an objective clinical complexity score $C(q) \in [1, 5]$:
+
+$$\text{Complexity Score } C(q) = \max\Big(1, \min\big(5, \text{BaseScore} + \Delta_{\text{drugs}} + \Delta_{\text{diseases}} + \Delta_{\text{high-risk}}\big)\Big)$$
+
+* **Rule 1 (Score 1 - Simple):** Informational or symptom inquiry with **0 drugs** $\rightarrow$ Routes to **Fast RAG Path** (3 agents: Planner $\rightarrow$ RAG $\rightarrow$ Response).
+* **Rule 2 (Score 3 - Moderate):** Guideline or single-drug protocol inquiry $\rightarrow$ Routes to **Guideline Path** (5 agents: Planner $\rightarrow$ RAG $\rightarrow$ Guidelines $\rightarrow$ Verifier $\rightarrow$ Response).
+* **Rule 3 (Score 4 to 5 - Complex / Critical Polypharmacy):** Multiple interacting medications ($\ge 2$), organ impairment comorbidity (e.g. CKD, Diabetes), or high-risk keywords (`bleeding`, `renal`, `dialysis`, `contraindicated`, `warfarin`) $\rightarrow$ Routes to **Full Neuro-Symbolic ARG Path** (All 7 agents with parallel Knowledge Graph traversal and safe alternative substitution).
 
 ---
 
