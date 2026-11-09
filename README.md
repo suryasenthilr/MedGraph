@@ -1,66 +1,59 @@
 # MedGraph 🩺 — Adaptive Reasoning Graph (ARG) Clinical Decision Support System
 
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
-[![React 18](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC.svg)](https://tailwindcss.com/)
-[![Groq Cloud](https://img.shields.io/badge/LLM-Groq%20Cloud%20(GPT--OSS%20120B)-f55036.svg)](https://groq.com/)
-[![UN SDG 3](https://img.shields.io/badge/UN%20SDG-3%20Good%20Health-16845B.svg)](https://sdgs.un.org/goals/goal3)
-
 > **MedGraph** is an advanced Generative-AI clinical decision support system designed to assist healthcare professionals by replacing rigid, fixed-chain RAG pipelines with **Adaptive Reasoning Graphs (ARG)**. MedGraph dynamically analyzes clinical query complexity, synthesizes a tailored Directed Acyclic Graph (DAG) of specialized medical agents, traverses biomedical ontologies (Knowledge Graph) and peer-reviewed literature (PubMed RAG), and performs multi-source evidence reconciliation to eliminate hallucinations and prevent adverse drug interactions.
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-1. [System Architecture & Workflow Diagram](#-system-architecture--workflow-diagram)
-2. [Why Adaptive Reasoning Graphs (ARG)?](#-why-adaptive-reasoning-graphs-arg)
-3. [The 7 Specialized Clinical Agents](#-the-7-specialized-clinical-agents)
-4. [Biomedical Evidence Grounding & Knowledge Bases (RAG, KG & Complexity)](#-biomedical-evidence-grounding--knowledge-bases)
-5. [Technology Stack](#-technology-stack)
-6. [UN Sustainable Development Goals (SDGs)](#-un-sustainable-development-goals-sdgs)
-7. [Comparative Benchmark Suite & Empirical Results](#-comparative-benchmark-suite)
-8. [Repository Structure](#-repository-structure)
-9. [Installation & Quick Start Guide](#-installation--quick-start-guide)
-10. [REST API Reference & Endpoints](#-rest-api-reference--endpoints)
-11. [Clinical Decision Safety Disclaimer](#-clinical-decision-safety-disclaimer)
+1. [System Architecture & Workflow Diagram](#system-architecture--workflow-diagram)
+2. [Why Adaptive Reasoning Graphs (ARG)?](#why-adaptive-reasoning-graphs-arg)
+3. [The 7 Specialized Clinical Agents](#the-7-specialized-clinical-agents)
+4. [Biomedical Evidence Grounding & Knowledge Bases](#biomedical-evidence-grounding--knowledge-bases)
+5. [Technology Stack](#technology-stack)
+6. [UN Sustainable Development Goals (SDGs)](#un-sustainable-development-goals-sdgs)
+7. [Comparative Benchmark Suite & Empirical Results](#comparative-benchmark-suite--empirical-results)
+8. [Repository Structure](#repository-structure)
+9. [Installation & Quick Start Guide](#installation--quick-start-guide)
+10. [REST API Reference & Endpoints](#rest-api-reference--endpoints)
+11. [Clinical Decision Safety Disclaimer](#clinical-decision-safety-disclaimer)
 
 ---
 
-## 🏛️ System Architecture & Workflow Diagram
+## System Architecture & Workflow Diagram
 
 Instead of routing every medical query through a static `User → RAG → LLM` pipeline, MedGraph dynamically compiles and executes a query-tailored reasoning topology:
 
 ```mermaid
 flowchart TD
-    UserQuery(["🩺 User Clinical Query"]) --> Planner["🧠 Agent 1: Planner Agent\n• Intent Classification\n• Entity Extraction (Drugs, Diseases, Labs)\n• Complexity Scoring (1/5 to 5/5)"]
+    UserQuery(["User Clinical Query"]) --> Planner["Agent 1: Planner Agent\n• Intent Classification\n• Entity Extraction (Drugs, Diseases, Labs)\n• Complexity Scoring (1/5 to 5/5)"]
 
     Planner --> Decision{"Complexity & Intent\nRouting Policy"}
 
     %% Path 1: Simple Symptoms
-    Decision -->|"Complexity 1/5\n(Simple / Lookup)"| Path1["⚡ Fast RAG Path"]
-    Path1 --> RAG1["📚 Agent 2: PubMed RAG\nVector Search"]
-    RAG1 --> Resp1["📝 Agent 7: Response Synthesizer"]
+    Decision -->|"Complexity 1/5\n(Simple / Lookup)"| Path1["Fast RAG Path"]
+    Path1 --> RAG1["Agent 2: PubMed RAG\nVector Search"]
+    RAG1 --> Resp1["Agent 7: Response Synthesizer"]
 
     %% Path 2: Clinical Guidelines
-    Decision -->|"Complexity 3/5\n(Protocol / Guideline)"| Path2["📋 Guideline Protocol Path"]
-    Path2 --> RAG2["📚 Agent 2: PubMed RAG"]
-    RAG2 --> Guide2["📑 Agent 5: Clinical Guidelines\n(KDIGO / ADA / CHEST / WHO)"]
-    Guide2 --> Verif2["🛡️ Agent 6: Evidence Verifier"]
-    Verif2 --> Resp2["📝 Agent 7: Response Synthesizer"]
+    Decision -->|"Complexity 3/5\n(Protocol / Guideline)"| Path2["Guideline Protocol Path"]
+    Path2 --> RAG2["Agent 2: PubMed RAG"]
+    RAG2 --> Guide2["Agent 5: Clinical Guidelines\n(KDIGO / ADA / CHEST / WHO)"]
+    Guide2 --> Verif2["Agent 6: Evidence Verifier"]
+    Verif2 --> Resp2["Agent 7: Response Synthesizer"]
 
     %% Path 3: Complex Polypharmacy / Multimorbidity
-    Decision -->|"Complexity 5/5\n(Critical Multi-Morbidity)"| Path3["🔥 Full Neuro-Symbolic ARG Path"]
-    Path3 --> RAG3["📚 Agent 2: PubMed RAG"]
-    Path3 --> KG3["🕸️ Agent 3: Medical Knowledge Graph\nMulti-Hop Ontological Traversal"]
+    Decision -->|"Complexity 5/5\n(Critical Multi-Morbidity)"| Path3["Full Neuro-Symbolic ARG Path"]
+    Path3 --> RAG3["Agent 2: PubMed RAG"]
+    Path3 --> KG3["Agent 3: Medical Knowledge Graph\nMulti-Hop Ontological Traversal"]
     
-    RAG3 & KG3 --> Safety3["⚠️ Agent 4: Drug Safety Specialist\n• Major DDI Detection\n• Renal / Organ Contraindications\n• Safe Alternative Calculation"]
-    RAG3 & KG3 --> Guide3["📑 Agent 5: Clinical Guidelines"]
+    RAG3 & KG3 --> Safety3["Agent 4: Drug Safety Specialist\n• Major DDI Detection\n• Renal / Organ Contraindications\n• Safe Alternative Calculation"]
+    RAG3 & KG3 --> Guide3["Agent 5: Clinical Guidelines"]
 
-    Safety3 & Guide3 --> Verif3["🛡️ Agent 6: Evidence Verifier\n• Cross-Source Concordance\n• Conflict Flagging\n• Grounding Score Calculation"]
-    Verif3 --> Resp3["📝 Agent 7: Response Synthesizer\n• Evidence-Grounded Markdown Tables\n• Provenance Citations\n• Safety Disclaimers"]
+    Safety3 & Guide3 --> Verif3["Agent 6: Evidence Verifier\n• Cross-Source Concordance\n• Conflict Flagging\n• Grounding Score Calculation"]
+    Verif3 --> Resp3["Agent 7: Response Synthesizer\n• Evidence-Grounded Markdown Tables\n• Provenance Citations\n• Safety Disclaimers"]
 
-    Resp1 & Resp2 & Resp3 --> FinalOutput(["📊 Final Clinical Recommendation & Telemetry"])
+    Resp1 & Resp2 & Resp3 --> FinalOutput(["Final Clinical Recommendation & Telemetry"])
 
     style UserQuery fill:#11423F,stroke:#1FB6A6,stroke-width:2px,color:#fff
     style Planner fill:#E3F2FA,stroke:#0878B9,stroke-width:2px,color:#163247
@@ -72,7 +65,7 @@ flowchart TD
 
 ---
 
-## ⚡ Why Adaptive Reasoning Graphs (ARG)?
+## Why Adaptive Reasoning Graphs (ARG)?
 
 Traditional Medical AI architectures suffer from two opposite extremes:
 1. **Direct LLMs & Fixed RAG**: High speed on simple queries, but prone to dangerous hallucinations and unable to perform deterministic multi-hop reasoning over contraindications.
@@ -86,7 +79,7 @@ MedGraph’s **Adaptive Reasoning Graph (ARG)** dynamically calibrates the reaso
 
 ---
 
-## 🤖 The 7 Specialized Clinical Agents
+## The 7 Specialized Clinical Agents
 
 | # | Agent Name | File | Role & Capabilities |
 | :-: | :--- | :--- | :--- |
@@ -101,7 +94,7 @@ MedGraph’s **Adaptive Reasoning Graph (ARG)** dynamically calibrates the reaso
 
 ---
 
-## 📚 Biomedical Evidence Grounding & Knowledge Bases
+## Biomedical Evidence Grounding & Knowledge Bases
 
 MedGraph achieves high diagnostic safety by combining **three verified medical evidence modalities**: unstructured peer-reviewed literature (PubMed RAG), structured ontologies (Medical Knowledge Graph), and official clinical practice guidelines.
 
@@ -166,7 +159,7 @@ $$\text{Complexity Score } C(q) = \max\Big(1, \min\big(5, \text{BaseScore} + \De
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -190,26 +183,26 @@ $$\text{Complexity Score } C(q) = \max\Big(1, \min\big(5, \text{BaseScore} + \De
 
 ---
 
-## 🌍 UN Sustainable Development Goals (SDGs)
+## UN Sustainable Development Goals (SDGs)
 
 MedGraph is developed in strong alignment with global healthcare and responsible AI sustainability goals:
 
-* 🩺 **SDG 3 — Good Health and Well-Being (PRIMARY DIRECT ALIGNMENT)**:
+* **SDG 3 — Good Health and Well-Being (Primary Alignment)**:
   * Empowers healthcare providers with verified, evidence-grounded decision support.
   * Mitigates adverse drug-drug interactions and diagnostic errors via structured contraindication reasoning.
   * Improves clinical accessibility to updated medical guidelines (KDIGO, ADA, CHEST, WHO).
-* 💡 **SDG 9 — Industry, Innovation and Infrastructure (SUPPORTING)**:
+* **SDG 9 — Industry, Innovation and Infrastructure (Supporting)**:
   * Delivers a novel neuro-symbolic multi-agent architecture combining parametric LLMs with structured knowledge graphs and dynamic DAG workflow synthesis.
-* 🤝 **SDG 10 — Reduced Inequalities (SUPPORTING)**:
+* **SDG 10 — Reduced Inequalities (Supporting)**:
   * Democratizes access to specialized clinical decision intelligence across resource-constrained clinics.
-* ⚖️ **SDG 16 — Peace, Justice and Strong Institutions / Responsible AI (SUPPORTING)**:
+* **SDG 16 — Peace, Justice and Strong Institutions / Responsible AI (Supporting)**:
   * Ensures transparent, accountable AI reasoning with full citation provenance, multi-source conflict reconciliation, and audit trails.
-* 🌐 **SDG 17 — Partnerships for the Goals (SUPPORTING)**:
+* **SDG 17 — Partnerships for the Goals (Supporting)**:
   * Harmonizes heterogeneous open medical knowledge ontologies (SNOMED CT, DrugBank, PubMed, WHO).
 
 ---
 
-## 📊 Comparative Benchmark Suite & Empirical Results
+## Comparative Benchmark Suite & Empirical Results
 
 The built-in evaluation engine (`POST /api/benchmark/run`) empirically benchmarks the 4 architectural paradigms under identical clinical inquiry workloads across factual grounding, contraindication safety catch rate, latency, and computational efficiency:
 
@@ -239,7 +232,7 @@ The built-in evaluation engine (`POST /api/benchmark/run`) empirically benchmark
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```text
 MedGraph_AIML/
@@ -300,7 +293,7 @@ MedGraph_AIML/
 
 ---
 
-## 🚀 Installation & Quick Start Guide
+## Installation & Quick Start Guide
 
 ### Prerequisites
 * **Python 3.10 or higher**
@@ -365,7 +358,7 @@ npm run dev
 
 ---
 
-## 📡 REST API Reference & Endpoints
+## REST API Reference & Endpoints
 
 | HTTP Method | Path | Description |
 | :--- | :--- | :--- |
@@ -388,12 +381,12 @@ curl -X POST "http://127.0.0.1:8000/api/query" \
 
 ---
 
-## 🛡️ Clinical Decision Safety Disclaimer
+## Clinical Decision Safety Disclaimer
 
 > **IMPORTANT**: *MedGraph is an experimental clinical decision support research prototype built to demonstrate Adaptive Reasoning Graphs, multi-source conflict verification, and neuro-symbolic AI reasoning. It is designed to assist qualified healthcare professionals with evidence-grounded insights and must **never** be used as a sole substitute for direct clinical judgment, medical diagnosis, or patient-specific treatment planning.*
 
 ---
 
-## 📄 License & Attribution
+## License & Attribution
 
 Developed as an open research prototype for Adaptive Clinical AI Reasoning and UN SDG 3 health innovation. Licensed under the [MIT License](LICENSE).
