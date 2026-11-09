@@ -8,9 +8,11 @@ export default function QueryInput({
   setMode,
   sampleQueries,
   onExecute,
-  isLoading
+  isLoading,
+  hasResults
 }) {
   const [showSamples, setShowSamples] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const modes = [
     {
@@ -58,6 +60,33 @@ export default function QueryInput({
     }
   };
 
+  if (hasResults && isCollapsed) {
+    return (
+      <div className="bg-white border border-[#D5E2EC] rounded-2xl p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center space-x-3 min-w-0">
+          <div className="h-8 w-8 rounded-lg bg-[#11423F] text-[#1FB6A6] flex items-center justify-center shrink-0 shadow-xs">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#587084] block">Active Clinical Inquiry</span>
+            <p className="text-xs font-bold text-[#11423F] truncate max-w-xl">{query}</p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2 shrink-0">
+          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-[#E6F8F6] text-[#0D9488] border border-[#0D9488]/30">
+            {modes.find(m => m.id === mode)?.name || mode}
+          </span>
+          <button
+            onClick={() => setIsCollapsed(false)}
+            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-[#F1F7FB] border border-[#D5E2EC] text-[#11423F] hover:bg-[#E2EDF5] transition-all"
+          >
+            Modify Query
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white border border-[#D5E2EC] rounded-2xl p-5 shadow-sm space-y-4">
       {/* Mode Selector */}
@@ -69,6 +98,15 @@ export default function QueryInput({
             </div>
             <span>Reasoning Architecture & Baseline Mode</span>
           </label>
+          {hasResults && (
+            <button
+              type="button"
+              onClick={() => setIsCollapsed(true)}
+              className="text-[11px] font-bold text-[#587084] hover:text-[#11423F] px-2.5 py-1 rounded-lg border border-[#D5E2EC] hover:bg-[#F1F7FB] transition-all"
+            >
+              Minimize Form
+            </button>
+          )}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
           {modes.map((m) => {

@@ -15,19 +15,34 @@ body {
 }
 
 /* Clinical Markdown Tables & Elements */
+.clinical-markdown {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
 .clinical-markdown table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-top: 0.875rem;
-  margin-bottom: 1.25rem;
+  min-width: 650px;
+  border-collapse: collapse;
   font-size: 0.8125rem;
   line-height: 1.5;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid #D5E2EC;
   background-color: #FFFFFF;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+/* Custom subtle scrollbars for responsive tables */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #F1F7FB;
+  border-radius: 4px;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #C9D9E4;
+  border-radius: 4px;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #A0B7C8;
 }
 
 .clinical-markdown th {

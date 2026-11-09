@@ -1,9 +1,10 @@
 import React from 'react';
-import { Activity, GitMerge, Database, BarChart3, Stethoscope, Cpu, ShieldCheck } from 'lucide-react';
+import { Activity, GitMerge, Database, BarChart3, Stethoscope, Cpu, ShieldCheck, Camera } from 'lucide-react';
 
 export default function Header({ activeTab, setActiveTab, healthInfo }) {
   const tabs = [
     { id: 'consultation', label: 'Clinical Consultation', icon: Stethoscope },
+    { id: 'screenshot', label: '📸 Screenshot View', icon: Camera },
     { id: 'arg_flow', label: 'Dynamic ARG Graph', icon: GitMerge },
     { id: 'evidence', label: 'Evidence Matrix', icon: ShieldCheck },
     { id: 'kg_explorer', label: 'Knowledge Graph', icon: Database },

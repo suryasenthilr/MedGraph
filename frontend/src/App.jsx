@@ -7,8 +7,9 @@ import ResponseView from './components/ResponseView';
 import KgExplorer from './components/KgExplorer';
 import BenchmarkDashboard from './components/BenchmarkDashboard';
 import SdgSidePanel from './components/SdgSidePanel';
+import ScreenshotDashboard from './components/ScreenshotDashboard';
 import { fetchHealth, fetchSampleQueries, submitClinicalQuery } from './services/api';
-import { AlertCircle, HeartPulse } from 'lucide-react';
+import { AlertCircle, HeartPulse, Globe, Camera } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('consultation');
@@ -19,6 +20,7 @@ export default function App() {
   const [stateData, setStateData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [showSdgPanel, setShowSdgPanel] = useState(true);
 
   useEffect(() => {
     // Initial fetch of health and samples
@@ -66,14 +68,38 @@ export default function App() {
 
         {/* Tab 1: Clinical Consultation Main Workflow */}
         {activeTab === 'consultation' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start min-w-0">
             {/* Left Column: SDG Sustainability & Impact Panel */}
-            <div className="lg:col-span-3 space-y-4">
-              <SdgSidePanel />
-            </div>
+            {showSdgPanel && (
+              <div className="lg:col-span-3 space-y-4 min-w-0">
+                <SdgSidePanel />
+              </div>
+            )}
 
             {/* Main Center Column: Clinical Consultation Console & Results */}
-            <div className="lg:col-span-9 space-y-6">
+            <div className={`${showSdgPanel ? 'lg:col-span-9' : 'lg:col-span-12'} space-y-6 min-w-0`}>
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => setShowSdgPanel(!showSdgPanel)}
+                  className="inline-flex items-center space-x-1.5 text-xs text-[#587084] hover:text-[#11423F] px-3 py-1.5 rounded-lg bg-white border border-[#D5E2EC] hover:bg-[#F1F7FB] transition-all shadow-xs"
+                  title={showSdgPanel ? "Hide SDG Panel to expand workspace" : "Show UN SDGs Panel"}
+                >
+                  <Globe className="h-3.5 w-3.5 text-[#1FB6A6]" />
+                  <span>{showSdgPanel ? "Hide SDG Side Panel (Expand Workspace)" : "Show UN SDGs Panel"}</span>
+                </button>
+
+                {stateData && (
+                  <button
+                    onClick={() => setActiveTab('screenshot')}
+                    className="inline-flex items-center space-x-1.5 text-xs text-[#0D9488] font-bold px-3.5 py-1.5 rounded-lg bg-[#E6F8F6] border border-[#0D9488]/30 hover:bg-[#D1F2EE] transition-all shadow-xs"
+                    title="Switch to All-in-One Screenshot View"
+                  >
+                    <Camera className="h-3.5 w-3.5" />
+                    <span>📸 All-in-One Screenshot View</span>
+                  </button>
+                )}
+              </div>
+
               <QueryInput
                 query={query}
                 setQuery={setQuery}
@@ -82,25 +108,40 @@ export default function App() {
                 sampleQueries={sampleQueries}
                 onExecute={handleExecute}
                 isLoading={isLoading}
+                hasResults={!!stateData}
               />
 
-              {/* Results Grid */}
+              {/* Results Section */}
               {stateData && (
-                <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                  {/* Left: Final Clinical Synthesis & Dynamic Graph */}
-                  <div className="xl:col-span-7 space-y-6">
+                <div className="space-y-6 min-w-0">
+                  {/* Full-width Final Clinical Synthesis & Recommendation */}
+                  <div className="w-full min-w-0">
                     <ResponseView stateData={stateData} />
-                    <ArgFlowVisualizer stateData={stateData} />
                   </div>
 
-                  {/* Right: Multi-Source Evidence Matrix */}
-                  <div className="xl:col-span-5">
-                    <EvidenceMatrix stateData={stateData} />
+                  {/* Telemetry & Multi-Source Evidence Section side-by-side */}
+                  <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 min-w-0 items-start">
+                    <div className="xl:col-span-6 min-w-0">
+                      <ArgFlowVisualizer stateData={stateData} />
+                    </div>
+                    <div className="xl:col-span-6 min-w-0">
+                      <EvidenceMatrix stateData={stateData} />
+                    </div>
                   </div>
                 </div>
               )}
             </div>
           </div>
+        )}
+
+        {/* Tab: Screenshot / Presentation Mode */}
+        {activeTab === 'screenshot' && (
+          <ScreenshotDashboard
+            stateData={stateData}
+            query={query}
+            mode={mode}
+            onSwitchToStandard={() => setActiveTab('consultation')}
+          />
         )}
 
         {/* Tab 2: Dynamic ARG Flowchart */}

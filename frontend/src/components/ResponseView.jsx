@@ -11,7 +11,10 @@ export default function ResponseView({ stateData }) {
   }
 
   const res = stateData.final_response;
-  const answerMarkdown = res.answer_markdown || '';
+  // Clean raw <br> tags produced by LLMs to standard markdown newlines
+  const answerMarkdown = (res.answer_markdown || '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/\n\s*•/g, '\n- ');
   const citations = res.citations || [];
   const confidenceLevel = res.confidence_level || 'HIGH';
   const confidenceScore = res.confidence_score || 0.95;
@@ -23,11 +26,11 @@ export default function ResponseView({ stateData }) {
   };
 
   return (
-    <div className="bg-white border border-[#D5E2EC] rounded-2xl p-6 shadow-sm space-y-5">
+    <div className="bg-white border border-[#D5E2EC] rounded-2xl p-6 shadow-sm space-y-5 min-w-0 overflow-hidden">
       {/* Response Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#D5E2EC]">
         <div className="flex items-center space-x-3">
-          <div className="h-10 w-10 rounded-xl bg-[#11423F] flex items-center justify-center text-[#1FB6A6] shadow-xs">
+          <div className="h-10 w-10 rounded-xl bg-[#11423F] flex items-center justify-center text-[#1FB6A6] shadow-xs shrink-0">
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div>
@@ -59,9 +62,33 @@ export default function ResponseView({ stateData }) {
         </div>
       </div>
 
-      {/* Rendered Clinical Answer with GFM Table Support */}
-      <div className="clinical-markdown prose max-w-none text-[#163247] text-xs leading-relaxed">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+      {/* Rendered Clinical Answer with GFM Table Support & Horizontal Scroll Protection */}
+      <div className="clinical-markdown max-w-none text-[#163247] text-xs leading-relaxed min-w-0">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            table: ({ node, ...props }) => (
+              <div className="w-full overflow-x-auto my-4 rounded-xl border border-[#D5E2EC] shadow-xs bg-white">
+                <table className="min-w-full border-collapse text-left text-xs" {...props} />
+              </div>
+            ),
+            thead: ({ node, ...props }) => (
+              <thead className="bg-[#F1F7FB] border-b border-[#D5E2EC]" {...props} />
+            ),
+            th: ({ node, ...props }) => (
+              <th className="px-4 py-3 text-[#11423F] font-bold text-xs uppercase tracking-wider border-r border-[#E2ECF3] last:border-r-0 whitespace-nowrap bg-[#F1F7FB]" {...props} />
+            ),
+            tbody: ({ node, ...props }) => (
+              <tbody className="divide-y divide-[#E8F0F5] bg-white" {...props} />
+            ),
+            tr: ({ node, ...props }) => (
+              <tr className="hover:bg-[#F8FCFE] transition-colors" {...props} />
+            ),
+            td: ({ node, ...props }) => (
+              <td className="px-4 py-3 text-xs text-[#163247] leading-relaxed border-r border-[#E8F0F5] last:border-r-0 align-top" {...props} />
+            )
+          }}
+        >
           {answerMarkdown}
         </ReactMarkdown>
       </div>
